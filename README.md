@@ -1,61 +1,93 @@
-# TaskFlow API
+# 🚀 TaskFlow – Backend Developer Intern Assignment Submission
 
-A production-ready full-stack task management application built with **Node.js, Express, TypeScript, PostgreSQL, Prisma, Redis, and Next.js**.
+A production-ready full-stack **Task Management System** built with **Node.js, Express, TypeScript, PostgreSQL, Prisma, Redis, and Next.js**.
 
----
-
-# Tech Stack
-
-| Layer      | Technology                           |
-| ---------- | ------------------------------------ |
-| Backend    | Node.js + Express + TypeScript       |
-| Database   | PostgreSQL + Prisma ORM              |
-| Auth       | JWT (Access Tokens) + bcrypt         |
-| API Docs   | Swagger / OpenAPI 3.0                |
-| Frontend   | Next.js 14 (App Router) + TypeScript |
-| Styling    | Tailwind CSS                         |
-| State      | Zustand                              |
-| Validation | Zod (frontend + backend)             |
-| Cache      | Redis (optional)                     |
-| DevOps     | Docker + Docker Compose              |
+This project demonstrates **secure authentication, role-based access control, scalable backend architecture, and full frontend integration**.
 
 ---
 
-# Quick Start
+# 📌 Live Features Overview
 
-## Prerequisites
+## 🔐 Authentication System
 
-* Node.js ≥ 18
-* Docker & Docker Compose
-* npm or yarn
+* User Registration & Login
+* Secure password hashing (bcrypt)
+* JWT-based authentication
+* Role-based access control (USER / ADMIN)
+
+## 📋 Task Management (CRUD)
+
+* Create tasks
+* View all / single task
+* Update tasks
+* Delete tasks
+* Status tracking (TODO / IN_PROGRESS / DONE)
+* Priority levels (LOW / MEDIUM / HIGH)
+
+## 🧠 System Design Features
+
+* Modular backend architecture
+* RESTful API design
+* Centralized error handling
+* Input validation (Zod)
+* API versioning (`/api/v1`)
+* Swagger documentation
+* Rate limiting middleware
+
+## 💻 Frontend (Next.js)
+
+* Authentication pages (Login/Register)
+* Protected dashboard
+* Task management UI
+* API integration layer
+* Zustand state management
+* Responsive UI with Tailwind CSS
+
+## ⚙️ DevOps & Scalability
+
+* Dockerized backend + database
+* PostgreSQL via Prisma ORM
+* Redis integration (optional caching layer)
+* Scalable folder/module structure
 
 ---
 
-# 1. Clone Repository
+# 🧱 Tech Stack
+
+| Layer      | Technology                      |
+| ---------- | ------------------------------- |
+| Backend    | Node.js, Express.js, TypeScript |
+| Database   | PostgreSQL                      |
+| ORM        | Prisma                          |
+| Auth       | JWT + bcrypt                    |
+| Frontend   | Next.js (App Router)            |
+| State      | Zustand                         |
+| Validation | Zod                             |
+| Cache      | Redis (optional)                |
+| DevOps     | Docker                          |
+
+---
+
+# 🚀 Getting Started
+
+## 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-org/taskflow.git
+git clone https://github.com/ankitnegi-dev/taskflow.git
 cd taskflow
 ```
 
 ---
 
-# 2. Start Database (Docker)
-
-⚠️ IMPORTANT: Ensure ports 5432 and 6379 are not already in use.
+## 2. Start Database (Docker)
 
 ```bash
 docker compose up -d postgres redis
 ```
 
-If ports are occupied, update `docker-compose.yml`:
-
-* PostgreSQL → `55432:5432`
-* Redis → `6380:6379`
-
 ---
 
-# 3. Backend Setup
+## 3. Backend Setup
 
 ```bash
 cd backend
@@ -63,48 +95,31 @@ npm install
 cp .env.example .env
 ```
 
-## Configure `.env`
+### Configure `.env`
 
 ```env
 DATABASE_URL="postgresql://postgres:password@localhost:55432/taskflow?schema=public"
-JWT_SECRET=your_super_secret_jwt_key_at_least_32_chars
+JWT_SECRET=your_super_secret_key
 JWT_EXPIRES_IN=7d
-JWT_REFRESH_SECRET=your_refresh_secret
 PORT=5000
 ```
 
----
-
-## Database Setup
+### Run migrations
 
 ```bash
 npx prisma migrate dev --name init
 npx prisma generate
 ```
 
-(Optional)
-
-```bash
-npm run prisma:seed
-```
-
----
-
-## Start Backend
+### Start backend
 
 ```bash
 npm run dev
 ```
 
-Backend runs at:
-
-* API: [http://localhost:5000/api/v1](http://localhost:5000/api/v1)
-* Swagger: [http://localhost:5000/api-docs](http://localhost:5000/api-docs)
-* Health: [http://localhost:5000/api/v1/health](http://localhost:5000/api/v1/health)
-
 ---
 
-# 4. Frontend Setup
+## 4. Frontend Setup
 
 ```bash
 cd ../frontend
@@ -112,65 +127,64 @@ npm install
 cp .env.example .env.local
 ```
 
-## Configure
+### Configure
 
 ```env
 NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1
 ```
 
-## Run Frontend
+### Start frontend
 
 ```bash
 npm run dev
 ```
 
-Frontend runs at:
+---
 
-* [http://localhost:3000](http://localhost:3000)
+# 🌐 Application URLs
+
+| Service      | URL                                                                        |
+| ------------ | -------------------------------------------------------------------------- |
+| Frontend     | [http://localhost:3000](http://localhost:3000)                             |
+| Backend API  | [http://localhost:5000/api/v1](http://localhost:5000/api/v1)               |
+| Swagger Docs | [http://localhost:5000/api-docs](http://localhost:5000/api-docs)           |
+| Health Check | [http://localhost:5000/api/v1/health](http://localhost:5000/api/v1/health) |
 
 ---
 
-# Authentication Flow
+# 🔐 Authentication Flow
 
-## 1. Register User
+## Register
 
-POST `/api/v1/auth/register`
-
-```json
-{
-  "name": "Admin User",
-  "email": "admin@taskflow.io",
-  "password": "Admin@123456"
-}
+```http
+POST /api/v1/auth/register
 ```
 
----
+## Login
 
-## 2. Login User
+```http
+POST /api/v1/auth/login
+```
 
-POST `/api/v1/auth/login`
-
-Response:
+### Response
 
 ```json
 {
   "data": {
-    "token": "eyJhbGciOiJIUzI1NiIs..."
+    "token": "JWT_TOKEN"
   }
 }
 ```
 
 ---
 
-## 3. Using Token (IMPORTANT)
-
-All protected routes require:
+## Using Token
 
 ```
 Authorization: Bearer <token>
 ```
 
-⚠️ Do NOT send:
+⚠️ Do NOT use:
 
 ```
 Bearer Bearer <token>
@@ -178,140 +192,98 @@ Bearer Bearer <token>
 
 ---
 
-# API Endpoints
+# 📋 API Endpoints
 
 ## Auth
 
-| Method | Endpoint       | Auth   | Description        |
-| ------ | -------------- | ------ | ------------------ |
-| POST   | /auth/register | Public | Register user      |
-| POST   | /auth/login    | Public | Login user         |
-| GET    | /auth/profile  | JWT    | Get logged-in user |
-
----
+| Method | Endpoint       | Description      |
+| ------ | -------------- | ---------------- |
+| POST   | /auth/register | Register user    |
+| POST   | /auth/login    | Login user       |
+| GET    | /auth/profile  | Get current user |
 
 ## Tasks
 
-| Method | Endpoint   | Auth | Description   |
-| ------ | ---------- | ---- | ------------- |
-| GET    | /tasks     | JWT  | Get all tasks |
-| GET    | /tasks/:id | JWT  | Get task      |
-| POST   | /tasks     | JWT  | Create task   |
-| PUT    | /tasks/:id | JWT  | Update task   |
-| DELETE | /tasks/:id | JWT  | Delete task   |
+| Method | Endpoint   | Description   |
+| ------ | ---------- | ------------- |
+| GET    | /tasks     | Get all tasks |
+| GET    | /tasks/:id | Get task      |
+| POST   | /tasks     | Create task   |
+| PUT    | /tasks/:id | Update task   |
+| DELETE | /tasks/:id | Delete task   |
 
 ---
 
-## Query Parameters (Tasks)
+# 🧪 Sample Credentials
+
+## Admin
 
 ```
-?page=1&limit=10&status=TODO&priority=HIGH&search=api&sortBy=createdAt&sortOrder=desc
+Email: admin@taskflow.io
+Password: Admin@123456
 ```
 
----
+## User
 
-# Swagger API
-
-[http://localhost:5000/api-docs](http://localhost:5000/api-docs)
-
-Steps:
-
-1. Click Authorize
-2. Paste:
-
-   ```
-   Bearer <token>
-   ```
-3. Test endpoints
-
----
-
-# Seed Credentials (if enabled)
-
-| Role  | Email                                         | Password     |
-| ----- | --------------------------------------------- | ------------ |
-| ADMIN | [admin@taskflow.io](mailto:admin@taskflow.io) | Admin@123456 |
-| USER  | [john@taskflow.io](mailto:john@taskflow.io)   | User@123456  |
-
----
-
-# Docker Deployment
-
-```bash
-docker compose up --build
 ```
-
-Stop:
-
-```bash
-docker compose down
+Email: john@taskflow.io
+Password: User@123456
 ```
 
 ---
 
-# Folder Structure
+# 🧠 Scalability Highlights
 
-```
-taskflow/
-├── backend/
-│   ├── prisma/
-│   └── src/
-│       ├── modules/
-│       ├── middleware/
-│       ├── utils/
-│       ├── config/
-│       ├── routes/
-│       ├── docs/
-│       ├── types/
-│       ├── app.ts
-│       └── server.ts
-├── frontend/
-│   ├── app/
-│   ├── components/
-│   ├── store/
-│   ├── lib/
-│   └── types/
-├── docker-compose.yml
-└── README.md
-```
+* Modular architecture (feature-based modules)
+* Stateless authentication (JWT)
+* Database abstraction using Prisma ORM
+* Middleware-based request pipeline
+* Docker-ready deployment
+* Redis ready for caching layer expansion
+* Clean separation of concerns (controller/service/repository pattern)
 
 ---
 
-# Common Issues
+# ⚠️ Common Issues
 
 ## 1. Port already in use
 
-Stop conflicting services or change Docker ports.
+Change ports in docker-compose or kill process
 
-## 2. Prisma authentication error
+## 2. Prisma auth error
 
-Ensure `DATABASE_URL` matches credentials defined in `docker-compose.yml`.
+Ensure DATABASE_URL matches Docker credentials
 
-## 3. Swagger Unauthorized
+## 3. Swagger unauthorized
 
 Use correct format:
 
 ```
-Authorization: Bearer <token>
+Bearer <token>
 ```
 
-## 4. Login fails after registration
+## 4. Login issues
 
-Check correct email/password and user existence.
+Ensure correct seeded credentials
 
 ---
 
-# Project Highlights
+# 📌 Submission Summary
 
 This project demonstrates:
 
-* JWT authentication system
-* Role-based access control (ADMIN / USER)
+* JWT Authentication system
+* Role-based access control (RBAC)
 * Full CRUD task management system
-* Prisma ORM with PostgreSQL
-* RESTful API design using Express
+* Scalable backend architecture
+* Prisma ORM database modeling
+* RESTful API design
 * Swagger API documentation
-* Dockerized development environment
-* Full-stack integration with Next.js frontend
+* Dockerized environment
+* Full-stack integration (Next.js frontend)
 
 ---
+
+# 🏁 Final Note
+
+This system is designed to be **scalable, secure, and production-ready**, following real-world backend engineering practices including modular architecture, authentication flows, and deployment readiness.
